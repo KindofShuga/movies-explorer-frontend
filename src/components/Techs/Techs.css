@@ -43,7 +43,6 @@
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, 90px);
-    grid-template-rows: 60px;
     justify-content: center;
     gap: 10px;
     list-style-type: none;
@@ -51,6 +50,7 @@
 
 .techs__tech {
     margin: 0;
+    min-height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,10 +82,10 @@
 
     .techs__techs-container {
         grid-template-columns: repeat(auto-fit, 84px);
-        grid-template-rows: 57px;
     }
 
     .techs__tech {
+        min-height: 57px;
         font-size: 12px;
         line-height: 15px;
     }
@@ -117,9 +117,13 @@
     }
 
     .techs__tech {
-        min-height: 57px;
         min-width: 84px;
-        font-size: 12px;
-        line-height: 15px;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .techs__techs-container {
+        max-width: 178px;
+        align-self: center;
     }
 }

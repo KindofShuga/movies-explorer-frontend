@@ -41,9 +41,9 @@
     background-position: center;
     width: 72px;
     background-color: #F4F4F4;
-    transition: opacity .4s ease-out,
-        width 1s,
-        background-color 1s;
+    transition: opacity .3s ease-out,
+                width .5s,
+                background-color 1s;
 }
 
 .movie__delete-btn {
@@ -62,7 +62,7 @@
     background-color: #F4F4F4;
     border: none;
     outline: none;
-    transition: .4s ease-out;
+    transition: .3s ease-out;
 }
 
 .movie__description {
@@ -93,23 +93,20 @@
     border-radius: 3px;
 }
 
-.movie__input:checked+.movie__save-btn {
-    background-image: url(/src/images/check-mark.svg);
-    background-size: 9px 7px;
-    background-color: #EE3465;
-    width: 21px;
+.movie:hover .movie__save-btn,
+.movie:hover .movie__delete-btn {
+    opacity: 1;
 }
 
 .movie__delete-btn:hover {
     background-color: rgba(245, 245, 245, .6)
 }
 
-.movie:hover .movie__save-btn {
-    opacity: 1;
-}
-
-.movie:hover .movie__delete-btn {
-    opacity: 1;
+.movie__input:checked+.movie__save-btn {
+    background-image: url(/src/images/check-mark.svg);
+    background-size: 9px 7px;
+    background-color: #EE3465;
+    width: 21px;
 }
 
 @media screen and (max-width: 900px) {
@@ -146,10 +143,5 @@
     .movie__title {
         font-size: 12px;
         line-height: 15px;
-    }
-
-    .movie__duration {
-        font-size: 11px;
-        line-height: 10px;
     }
 }

@@ -20,7 +20,7 @@ export default function Header({ loggedIn }) {
             {loggedIn &&
                 <>
                     <input type="checkbox" id="check" />
-                    <Link to="/">
+                    <Link to="/" className="header__logo-link">
                         <img src={headerLogo} alt="Логотип" className="header__logo" />
                     </Link>
                     <label htmlFor="check" className="header__fa-bars" />

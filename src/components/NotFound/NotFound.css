@@ -1,6 +1,6 @@
 .not-found {
     margin: auto;
-    padding: 246px 0 0;
+    padding: 246px 0 60px;
     max-width: 400px;
     display: flex;
     flex-direction: column;
@@ -34,13 +34,13 @@
 
 @media screen and (max-width: 900px) {
     .not-found {
-        padding: 408px 0 0;
+        padding: 408px 0 222px;
     }
 }
 
 @media screen and (max-width: 500px) {
     .not-found {
-        padding: 329px 0 0;
+        padding: 329px 0 30px;
     }
 
     .not-found__title {

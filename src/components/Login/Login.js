@@ -9,6 +9,12 @@ export default function Login() {
             textQuestion="Ещё не зарегистрированы?"
             linkTitle="Регистрация"
             link="/signup">
+            <label className="auth-form__field">E-mail
+                <input className="auth-form__input" type="text" defaultValue="pochta@yandex.ru" required />
+            </label>
+            <label className="auth-form__field">Пароль
+                <input className="auth-form__input" type="password" defaultValue="123ss231wsW" required />
+            </label>
         </AuthWithForm>
     );
 }

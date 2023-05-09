@@ -16,6 +16,10 @@
     align-items: center;
 }
 
+.header__logo-link {
+    transition: .4s;
+}
+
 .header__logo {
     object-fit: cover;
     max-width: 38px;
@@ -34,6 +38,7 @@
     font-size: 12px;
     line-height: 16px;
     text-decoration: none;
+    transition: .4s;
 }
 
 .header__fa-bars {
@@ -89,7 +94,7 @@
     text-decoration: none;
     border: 2px solid rgba(170, 170, 170, .2);
     border-radius: 50px;
-    transition: .3s;
+    transition: opacity .3s;
 }
 
 .header__account-img {
@@ -121,20 +126,16 @@
     font-weight: 500;
 }
 
-.header__link:last-of-type {
-    margin: 0;
-}
-
-.header__nav-link:last-of-type {
-    margin: 0;
-}
-
+.header__logo-link:hover,
+.header__fa-bars:hover,
+.header__link:hover,
 .header__account-container:hover {
     opacity: .6;
 }
 
-.header__fa-bars:hover {
-    opacity: .6;
+.header__link:last-of-type,
+.header__nav-link:last-of-type {
+    margin: 0;
 }
 
 #check:checked~.header__fa-bars {
@@ -156,17 +157,16 @@
 
     .header__menu {
         padding: 159px 90px 0;
+        width: 340px;
+        height: 100%;
         display: flex;
         flex-direction: column;
         position: fixed;
         top: 0;
-        right: 0;
-        width: 340px;
-        height: 100%;
-        transform: translateX(525px);
+        right: -100%;
         background-color: #FAFAFA;
         z-index: 1;
-        transition: .6s;
+        transition: right .6s;
     }
 
     .header__links-container {
@@ -186,7 +186,7 @@
     }
 
     .header__account-container {
-        margin: 615px 0 0;
+        margin: 618px 0 0;
     }
     
 
@@ -200,8 +200,7 @@
     }
 
     #check:checked~.header__menu {
-        visibility: visible;
-        transform: translateX(0);
+        right: 0;
     }
 }
 
@@ -209,11 +208,10 @@
     .header__menu {
         padding: 145px 0 0;
         width: 100%;
-        transform: translateX(100%);
     }
 
     .header__nav-link {
-        margin: 0 0 16px 0;
+        margin: 0 0 17px 0;
         padding-bottom: 7px;
     }
 

@@ -50,6 +50,8 @@
     font-size: 14px;
     line-height: 17px;
     text-decoration: none;
+    color: black;
+    transition: .4s;
 }
 
 .about-me__photo {
@@ -57,6 +59,10 @@
     height: 327px;
     object-fit: cover;
     border-radius: 10px;
+}
+
+.about-me__link:hover {
+    opacity: .6;
 }
 
 @media screen and (max-width: 900px) {
