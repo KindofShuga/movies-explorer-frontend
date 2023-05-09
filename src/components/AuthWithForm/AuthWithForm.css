@@ -1,0 +1,155 @@
+.auth-form {
+    margin: 0 auto;
+    padding: 70px 0;
+}
+
+.auth-form__container {
+    margin: 0 auto;
+    max-width: 396px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form__logo {
+    object-fit: cover;
+    max-width: 38px;
+    max-height: 38px;
+    transition: .4s;
+}
+
+.auth-form__title {
+    margin: 36px 0 41px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+}
+
+.auth-form__form {
+    min-height: 335px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form__field {
+    margin: 0 0 6px;
+    min-height: 63px;
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    line-height: 12px;
+    color: #A0A0A0;
+}
+
+.auth-form__input {
+    margin: 5px 0 0;
+    padding: 0 0 10px;
+    font-size: 14px;
+    line-height: 17px;
+    border: none;
+    background: none;
+    outline: none;
+    border-bottom: 1px solid #E8E8E8;
+    transition: border-bottom .4s;
+}
+
+.auth-form__input_err {
+    font-weight: 400;
+    color: #EE3465;
+}
+
+.auth-form__input-err {
+    margin-top: 6px;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465;
+}
+
+.auth-form__submit-btn {
+    margin: 0;
+    padding: 0;
+    min-height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
+    color: white;
+    border: 0;
+    background-color: #3456F3;
+    border-radius: 3px;
+    transition: opacity .2s ease-in;
+}
+
+.auth-form__text {
+    margin: 16px auto 0;
+    font-size: 14px;
+    line-height: 17px;
+    color: #A0A0A0;
+}
+
+.auth-form__link {
+    margin-left: 6px;
+    color: #3456F3;
+    text-decoration: none;
+    transition: opacity .2s ease-in;
+}
+.auth-form__logo:hover,
+.auth-form__submit-btn:hover,
+.auth-form__link:hover {
+    opacity: .6;
+}
+
+.auth-form__field:last-of-type {
+    margin: 0;
+}
+
+.auth-form__input:focus {
+    font-weight: 500;
+    border-bottom: 1px solid #3456F3;
+}
+
+.auth-form__input_err:focus {
+    border-bottom: 1px solid #EE3465;
+}
+
+.auth-form__input:-webkit-autofill,
+.auth-form__input:-webkit-autofill:hover,
+.auth-form__input:-webkit-autofill:focus,
+.auth-form__input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    box-shadow: 0 0 0px 1000px white inset;
+}
+
+.auth-form__input:-webkit-autofill {
+    -webkit-text-fill-color: black;
+}
+
+@media screen and (max-width: 900px) {
+    .auth-form {
+        padding: 232px 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .auth-form {
+        padding: 56px 30px;
+    }
+
+    .auth-form__logo-link {
+        align-self: center;
+    }
+
+    .auth-form__title {
+        margin: 47px 0 80px;
+        align-self: center;
+    }
+
+    .auth-form__form {
+        min-height: 423px;
+    }
+
+    .auth-form__submit-btn,
+    .auth-form__text {
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
