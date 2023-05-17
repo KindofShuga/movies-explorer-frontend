@@ -8,7 +8,7 @@ class MoviesApi {
         }
         return res.json();
     }
-    get() {
+    getMovies() {
         return fetch(`${this._options.baseUrl}`, {
             method: 'GET',
             headers: this._options.headers,

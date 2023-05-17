@@ -17,6 +17,7 @@
 }
 
 .header__logo-link {
+    max-height: 38px;
     transition: .4s;
 }
 
@@ -42,11 +43,12 @@
 }
 
 .header__fa-bars {
-    min-width: 40px;
-    min-height: 43px;
+    min-width: 30px;
+    min-height: 32px;
     background-image: url(/src/images/fa-bars-icon.svg);
     background-size: 40px 43px;
     background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
     transition: opacity .2s ease-in;
     display: none;

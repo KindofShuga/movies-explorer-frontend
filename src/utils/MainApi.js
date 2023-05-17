@@ -15,7 +15,7 @@ class MainApi {
         })
             .then(this._getResponseData)
     }
-    
+
     updateProfile(data) {
         return fetch(`${this._options.baseUrl}/users/me`, {
             method: 'PATCH',
@@ -40,7 +40,19 @@ class MainApi {
         return fetch(`${this._options.baseUrl}/movies`, {
             method: 'POST',
             headers: this._options.headers,
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                country: data.country,
+                director: data.director,
+                duration: data.duration,
+                year: data.year,
+                description: data.description,
+                image: `https://api.nomoreparties.co${data.image.url}`,
+                trailerLink: data.trailerLink,
+                thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
+                movieId: data.id,
+                nameRU: data.nameRU,
+                nameEN: data.nameEN,
+            }),
         })
             .then(this._getResponseData)
     }
@@ -52,9 +64,14 @@ class MainApi {
         })
             .then(this._getResponseData)
     }
+
+    getUserAndSavedMovies() {
+        const promises = [this.getProfile(), this.getMovies()];
+        return Promise.all(promises);
+    }
 }
 const mainApi = new MainApi({
-    baseUrl: 'http://127.0.0.1:3000',
+    baseUrl: 'http://127.0.0.1:3001',
     headers: {
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json'

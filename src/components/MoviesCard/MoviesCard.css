@@ -1,12 +1,12 @@
 .movie {
     list-style-type: none;
     position: relative;
-    cursor: pointer;
 }
 
 
 .movie__image {
     width: 100%;
+    aspect-ratio: 16/9;
     margin-bottom: 11px;
     object-fit: cover;
     border-radius: 6px;
@@ -41,7 +41,7 @@
     background-position: center;
     width: 72px;
     background-color: #F4F4F4;
-    transition: opacity .3s ease-out,
+    transition: opacity .4s ease-out,
                 width .5s,
                 background-color 1s;
 }
@@ -74,6 +74,7 @@
 
 .movie__title {
     margin: 0;
+    max-width: 275px;
     font-weight: 500;
     font-size: 13px;
     line-height: 16px;
