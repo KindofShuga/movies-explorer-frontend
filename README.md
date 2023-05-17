@@ -1,6 +1,6 @@
 # Проект Movies-explorer фронтенд  
 ###### Репозиторий фронтенд-части приложения `Movies-explorer`  
-***[Сайт](https://movies-explorer.alinat.nomoredomains.monster/)***  
+#### ***[Сайт](https://movies-explorer.alinat.nomoredomains.monster/)***  
 
 ___
 
