@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'https://api.movies-explorer.alina.nomoredomains.monster';
 
 const getResponse = (res) => {
     console.log(res)

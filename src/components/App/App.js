@@ -27,11 +27,6 @@ export default function App() {
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [isSuccessInfoTooltip, setIsSuccessInfoTooltip] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [errorMassege, setErrorMessage] = useState("");
-
-
-  const [searchedMovies, setSearchedMovies] = useState([]);
-  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   const [checkedShorts, setCheckedShorts] = useState(false);
 
   function closeInfoTooltipPopup() {
@@ -89,73 +84,15 @@ export default function App() {
       .finally(() => setIsLoading(false));
   }
 
-  // const handleSearchMovie = (searchText) => {
-  //   const setFilteredMovies = (allMovies) => {
-  //     const filteredMovies = filterMovies(allMovies, searchText);
-  //     if (filteredMovies.length === 0) {
-  //       const newMovies = { movies: "Ничего не найдено", searchText: searchText }
-  //       return newMovies;
-  //     } else {
-  //       const newMovies = { movies: filteredMovies, searchText: searchText, shortsChecked: checkedShorts }
-  //       return newMovies;
-  //     }
-  //   }
-  //   const reject = {
-  //     movies: `Во время запроса произошла ошибка. 
-  //       Возможно, проблема с соединением или сервер недоступен. 
-  //       Подождите немного и попробуйте ещё раз`,
-  //     searchText: searchText
-  //   }
-
-  //   setIsLoading(true);
-
-  //   if (location.pathname === '/movies') {
-  //     moviesApi.getMovies()
-  //       .then((allMovies) => {
-  //         window.localStorage.removeItem('movies');
-  //         const newMovies = setFilteredMovies(allMovies)
-  //         return localStorage.setItem('movies', JSON.stringify(newMovies));
-  //       })
-  //       // .then(storage => setSearchedMovies(storage))
-  //       .catch((err) => {
-  //         console.log(err);
-  //         return localStorage.setItem('movies', JSON.stringify(reject));
-  //       })
-  //       .finally(() => {
-  //         setIsLoading(false)
-  //       });
-  //   } else {
-  //     try {
-  //       window.localStorage.removeItem('saved-movies');
-  //       const savedMoviesCopied = savedMovies.slice(0);
-  //       const newMovies = setFilteredMovies(savedMoviesCopied);
-  //       setFilteredSavedMovies(newMovies);
-  //       return localStorage.setItem('saved-movies', JSON.stringify(newMovies));
-  //     }
-  //     catch (err) {
-  //       console.log(err);
-  //     }
-  //     finally {
-  //       setIsLoading(false)
-  //     }
-  //   }
-  // }
   const setFilterMovies = (allMovies, searchText) => {
     const filteredMovies = filterMovies(allMovies, searchText, checkedShorts);
-    // if (filteredMovies.length === 0) {
-    //   const newMovies = { movies: "Ничего не найдено", searchText: searchText }
-    //   return newMovies;
-    // } else {
-    //   const newMovies = { movies: filteredMovies, searchText: searchText }
-    //   return newMovies;
     if (filteredMovies.length === 0) {
       return [notFoundText];
     } else {
-      // const newMovies = { movies: filteredMovies, searchText: searchText }
-      // return newMovies;
       return filteredMovies;
     }
   };
+
   const handleSearchMovie = (searchText) => {
     setIsLoading(true);
 
@@ -177,22 +114,12 @@ export default function App() {
         });
     } else {
       try {
-        // const savedMoviesCopied = savedMovies.slice(0);
-        // const newMovies = setFilterMovies(savedMovies, searchText);
         const newMovies = setFilterMovies(JSON.parse(localStorage.getItem('saved-movies')), searchText);
-        // if (newMovies.length === 0) {
-        //   setSavedMovies(["Ничего не найдено"]);
-        // } else {
         setSavedMovies(newMovies);
-        // setSavedMovies(newMovies);
-        //   setFilteredSavedMovies(newMovies);
-        // }
-        // setFilteredSavedMovies(newMovies.movies);
       }
       catch (err) {
         console.log(err);
         setSavedMovies([serverErrorText]);
-        // setFilteredSavedMovies(reject.movies);
       }
       finally {
         setIsLoading(false)
@@ -212,16 +139,10 @@ export default function App() {
 
   const handleMovieDelete = (movieInfo) => {
     const movieId = movieInfo._id || (savedMovies.find((savedMovie) => savedMovie.movieId === movieInfo.id))._id;
-    // console.log(movieInfo);
-    // console.log(movieId);
     mainApi.deleteMovie(movieId)
       .then(() => {
         setSavedMovies((moviesArray) => moviesArray.filter((oneMovie) => oneMovie._id !== movieId));
       })
-      // mainApi.deleteMovie(movieInfo)
-      //   .then(() => {
-      //     setSavedMovies((moviesArray) => moviesArray.filter((oneMovie) => oneMovie._id !== movieInfo._id));
-      //   })
       .catch((err) => {
         setIsSuccessInfoTooltip(false);
         setIsInfoTooltipPopupOpen(true);
@@ -278,9 +199,7 @@ export default function App() {
             loggedIn={loggedIn}
             element={Movies}
             savedMovies={savedMovies}
-            errorMassege={errorMassege}
             handleSearchMovie={handleSearchMovie}
-            searchedMovies={searchedMovies}
             onCheckedShorts={setCheckedShorts}
             onMovieSave={handleMovieSave}
             handleMovieDelete={handleMovieDelete}
@@ -293,8 +212,6 @@ export default function App() {
             loggedIn={loggedIn}
             element={SavedMovies}
             savedMovies={savedMovies}
-            filteredSavedMovies={filteredSavedMovies}
-            errorMassege={errorMassege}
             onCheckedShorts={setCheckedShorts}
             onSearchMovie={handleSearchMovie}
             handleMovieDelete={handleMovieDelete}

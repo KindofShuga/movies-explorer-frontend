@@ -4,7 +4,7 @@ import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { notFoundText } from '../../utils/textConstans';
 
-export default function MoviesCardList({ savedMovies, filteredSavedMovies, onMovieSave, handleMovieDelete, errorMassege }) {
+export default function MoviesCardList({ savedMovies, onMovieSave, handleMovieDelete }) {
     const location = useLocation();
     const [count, setCount] = useState(0);
     const [currentMovies, setCurrentMovies] = useState([]);
@@ -52,49 +52,11 @@ export default function MoviesCardList({ savedMovies, filteredSavedMovies, onMov
             }
         } else {
             savedMovies.length > 0 ? setCurrentMovies(savedMovies) : setCurrentMovies([notFoundText]);
-            // setCurrentMovies(savedMovies);
         }
-        // }, [localStorage, filteredSavedMovies, savedMovies, useNavigate]);
-    }, [localStorage, filteredSavedMovies, savedMovies, useNavigate, errorMassege]);
+    }, [localStorage, savedMovies, useNavigate]);
 
-
-    // useEffect(() => {
-    //     // setTimeout(() => {
-    //     console.log(savedMovies);
-    //     // }, 1000)
-    // }, [savedMovies])
-    // useEffect(() => {
-    //     const storageName = location.pathname === '/movies' ? 'movies' : 'saved-movies';
-    //     const moviesStorage = JSON.parse(localStorage.getItem(storageName));
-    //     if (moviesStorage) {
-    //         if (moviesStorage.shortsChecked === true) {
-    //             const shortMovies = filterShorts(moviesStorage.movies);
-    //             setCurrentMovies(shortMovies);
-    //         } else {
-    //             setCurrentMovies(moviesStorage.movies);
-    //         };
-    //     } else if (storageName === 'saved-movies') {
-    //         setCurrentMovies(savedMovies);
-    //     }
-    // // }, [onSearchMovie, savedMovies, searchedMovies, useNavigate])
-    // }, [filteredSavedMovies, searchedMovies, savedMovies, useNavigate])
-    // useEffect(() => {
-    //     const moviesStorage = JSON.parse(localStorage.getItem('/movies'));
-    //     if (moviesStorage) {
-    //         if (moviesStorage.shortsChecked === true) {
-    //             const shortMovies = filterShorts(moviesStorage.movies);
-    //             setCurrentMovies(shortMovies);
-    //         } else {
-    //             setCurrentMovies(moviesStorage.movies);
-    //         };
-    //     } else if (storageName === 'saved-movies') {
-    //         setCurrentMovies(savedMovies);
-    //     }
-    // // }, [onSearchMovie, savedMovies, searchedMovies, useNavigate])
-    // }, [filteredSavedMovies, searchedMovies, savedMovies, useNavigate])
     return (
         <section className="movies">
-            {/* {typeof currentMovies !== "string" ? */}
             {typeof currentMovies[0] !== "string" ?
                 (
                     <>

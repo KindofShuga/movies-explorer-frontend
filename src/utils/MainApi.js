@@ -71,7 +71,7 @@ class MainApi {
     }
 }
 const mainApi = new MainApi({
-    baseUrl: 'http://127.0.0.1:3001',
+    baseUrl: 'https://api.movies-explorer.alina.nomoredomains.monster',
     headers: {
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json'

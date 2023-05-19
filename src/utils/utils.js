@@ -14,12 +14,6 @@ export function filterMovies(movies, searchText, checkedShorts) {
     }
 }
 
-// export function filterShorts(movies) {
-//     return movies.filter((movie) => {
-//         return movie.duration <= 40;
-//     });
-// }
-
 export function getTimeFromMins(mins) {
     let hours = Math.trunc(mins / 60);
     let minutes = mins % 60;

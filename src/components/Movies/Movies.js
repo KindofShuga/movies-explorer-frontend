@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-export default function Movies({ isLoading, loggedIn, savedMovies, handleSearchMovie, searchedMovies, onCheckedShorts, onMovieSave, handleMovieDelete }) {
+export default function Movies({ isLoading, loggedIn, savedMovies, handleSearchMovie, onCheckedShorts, onMovieSave, handleMovieDelete }) {
     return (
         <>
             {isLoading ?
@@ -21,7 +21,6 @@ export default function Movies({ isLoading, loggedIn, savedMovies, handleSearchM
                             <MoviesCardList
                                 onSearchMovie={handleSearchMovie}
                                 savedMovies={savedMovies}
-                                searchedMovies={searchedMovies}
                                 onMovieSave={onMovieSave}
                                 handleMovieDelete={handleMovieDelete}
                             />
