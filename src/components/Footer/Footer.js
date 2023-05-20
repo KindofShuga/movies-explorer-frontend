@@ -9,8 +9,12 @@ export default function Footer() {
                 <nav className="footer__navigation">
                     <p className="footer__copyright">© 2023</p>
                     <ul className="footer__column-links">
-                        <li className="footer__column-link"><a className="footer__link" href="https://practicum.yandex.ru" target="_blank" rel="noreferrer">Яндекс.Практикум</a></li>
-                        <li className="footer__column-link"><a className="footer__link" href="https://github.com/KindofShuga" target="_blank" rel="noreferrer">Github</a></li>
+                        <li className="footer__column-link">
+                            <a className="footer__link" href="https://practicum.yandex.ru" target="_blank" rel="noreferrer">Яндекс.Практикум</a>
+                        </li>
+                        <li className="footer__column-link">
+                            <a className="footer__link" href="https://github.com/KindofShuga" target="_blank" rel="noreferrer">Github</a>
+                        </li>
                     </ul>
                 </nav>
             </div>

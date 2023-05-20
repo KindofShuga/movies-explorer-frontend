@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import './SearchForm.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
 import { useFormWithValidation } from "../../utils/validation";
 
 export default function SearchForm({ onSearchMovie, onCheckedShorts }) {
     const location = useLocation();
+    const checkboxFromStorage = localStorage.getItem('movies') ?
+        location.pathname === '/movies' && JSON.parse(localStorage.getItem('movies')).checkedShorts
+        : null;
     const { values, handleChange, errors, isValid, setIsValid } = useFormWithValidation();
 
     function handleSubmit(e) {
@@ -14,15 +17,16 @@ export default function SearchForm({ onSearchMovie, onCheckedShorts }) {
         onSearchMovie(title);
     }
 
-
     useEffect(() => {
-        setIsValid(true)
-        const storageName = location.pathname === '/movies' ? 'movies' : 'saved-movies';
-        const moviesStorage = JSON.parse(localStorage.getItem(storageName));
-        if (moviesStorage) {
-            values.title = moviesStorage.searchText;
+        setIsValid(true);
+        if (location.pathname === '/movies') {
+            const moviesStorage = JSON.parse(localStorage.getItem('movies'));
+            if (moviesStorage) {
+                values.title = moviesStorage.searchText;
+            }
         }
-    }, [useNavigate]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location]);
     return (
         <section className="search-form">
             <form className="search-form__form" onSubmit={handleSubmit}>
@@ -49,7 +53,7 @@ export default function SearchForm({ onSearchMovie, onCheckedShorts }) {
                 <button className={`search-form__submit-btn ${!isValid ? "search-form__submit-btn_inactive" : ""}`} type="submit" aria-label="Найти" />
             </form>
             <div className="search-form__switch-container">
-                <FilterCheckbox onCheckedShorts={onCheckedShorts} />
+                <FilterCheckbox onCheckedShorts={onCheckedShorts} checkboxFromStorage={checkboxFromStorage} />
                 <p className="search-form__switch-text">Короткометражки</p>
             </div>
         </section>

@@ -1,6 +1,6 @@
 class MainApi {
-    constructor(options) {
-        this._options = options;
+    constructor(baseUrl) {
+        this._baseUrl = baseUrl;
     }
     _getResponseData(res) {
         if (!res.ok) {
@@ -8,18 +8,26 @@ class MainApi {
         }
         return res.json();
     }
+    _getHeaders() {
+        const headers = {
+            authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            'Content-Type': 'application/json'
+        }
+        return headers;
+    }
+
     getProfile() {
-        return fetch(`${this._options.baseUrl}/users/me`, {
+        return fetch(`${this._baseUrl}/users/me`, {
             method: 'GET',
-            headers: this._options.headers
+            headers: this._getHeaders(),
         })
             .then(this._getResponseData)
     }
 
     updateProfile(data) {
-        return fetch(`${this._options.baseUrl}/users/me`, {
+        return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
-            headers: this._options.headers,
+            headers: this._getHeaders(),
             body: JSON.stringify({
                 name: data.name,
                 email: data.email
@@ -29,17 +37,17 @@ class MainApi {
     }
 
     getMovies() {
-        return fetch(`${this._options.baseUrl}/movies`, {
+        return fetch(`${this._baseUrl}/movies`, {
             method: 'GET',
-            headers: this._options.headers,
+            headers: this._getHeaders(),
         })
             .then(this._getResponseData)
     }
 
     addMovie(data) {
-        return fetch(`${this._options.baseUrl}/movies`, {
+        return fetch(`${this._baseUrl}/movies`, {
             method: 'POST',
-            headers: this._options.headers,
+            headers: this._getHeaders(),
             body: JSON.stringify({
                 country: data.country,
                 director: data.director,
@@ -58,9 +66,9 @@ class MainApi {
     }
 
     deleteMovie(id) {
-        return fetch(`${this._options.baseUrl}/movies/${id}`, {
+        return fetch(`${this._baseUrl}/movies/${id}`, {
             method: 'DELETE',
-            headers: this._options.headers,
+            headers: this._getHeaders(),
         })
             .then(this._getResponseData)
     }
@@ -70,11 +78,5 @@ class MainApi {
         return Promise.all(promises);
     }
 }
-const mainApi = new MainApi({
-    baseUrl: 'https://api.movies-explorer.alina.nomoredomains.monster',
-    headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json'
-    }
-});
+const mainApi = new MainApi('https://api.movies-explorer.alina.nomoredomains.monster');
 export default mainApi

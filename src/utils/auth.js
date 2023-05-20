@@ -1,7 +1,6 @@
 const BASE_URL = 'https://api.movies-explorer.alina.nomoredomains.monster';
 
 const getResponse = (res) => {
-    console.log(res)
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
 

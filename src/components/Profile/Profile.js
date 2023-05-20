@@ -1,13 +1,12 @@
 import React, { useEffect, useContext } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Preloader from '../Preloader/Preloader';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormWithValidation } from "../../utils/validation";
 import Header from '../Header/Header';
 import './Profile.css';
 
-export default function Profile({ isLoading, loggedIn, onUpdateUser }) {
-    const navigate = useNavigate();
+export default function Profile({ isLoading, loggedIn, onUpdateUser, signOut }) {
     const { values, handleChange, errors, isValid, resetForm, setIsValid } = useFormWithValidation();
     const currentUser = useContext(CurrentUserContext);
 
@@ -16,23 +15,18 @@ export default function Profile({ isLoading, loggedIn, onUpdateUser }) {
         onUpdateUser(values);
     }
 
-    function signOut() {
-        localStorage.removeItem("jwt");
-        localStorage.removeItem('movies');
-        localStorage.removeItem('saved-movies');
-        navigate('/');
-    }
-
     useEffect(() => {
         if (currentUser.name === values.name && currentUser.email === values.email) {
             setIsValid(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
     useEffect(() => {
         resetForm(currentUser);
         values.name = currentUser.name;
         values.email = currentUser.email;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser]);
     return (
         <>
@@ -56,7 +50,9 @@ export default function Profile({ isLoading, loggedIn, onUpdateUser }) {
                                             onChange={handleChange}
                                             name="name"
                                         />
-                                        <span className="profile__input-err">{errors.name && "Поле может содержать только латиницу, кириллицу, пробел или дефис."}</span>
+                                        <span className="profile__input-err">
+                                            {errors.name && "Поле может содержать только латиницу, кириллицу, пробел или дефис."}
+                                        </span>
                                     </label>
                                     <label className="profile__field">E-mail
                                         <input
@@ -71,7 +67,7 @@ export default function Profile({ isLoading, loggedIn, onUpdateUser }) {
                                     </label>
                                     <button className={`profile__edit-btn ${!isValid ? "profile__edit-btn_inactive" : ""}`} type="submit">Редактировать</button>
                                 </form>
-                                <Link className="profile__exit-btn" to="/signin" onClick={signOut}>Выйти из аккаунта</Link>
+                                <Link className="profile__exit-btn" to="/" onClick={signOut}>Выйти из аккаунта</Link>
                             </div>
                         </section>
                     </main>

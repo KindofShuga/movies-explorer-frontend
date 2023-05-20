@@ -2,7 +2,6 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import InfoTooltip from '../InfoTooltip/InfoTooltip'
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -10,13 +9,13 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
+import InfoTooltip from '../InfoTooltip/InfoTooltip'
+import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import * as auth from '../../utils/auth'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { serverErrorText, notFoundText } from '../../utils/textConstans';
-
-import moviesApi from '../../utils/MoviesApi';
 import { filterMovies } from '../../utils/utils.js';
+import { serverErrorText, notFoundText } from '../../utils/textConstans';
 
 export default function App() {
   const navigate = useNavigate();
@@ -24,18 +23,24 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
-  const [isSuccessInfoTooltip, setIsSuccessInfoTooltip] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
   const [checkedShorts, setCheckedShorts] = useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   function closeInfoTooltipPopup() {
     setIsInfoTooltipPopupOpen(false);
+    setIsSuccess(false);
+  }
+
+  function signOut() {
+    setLoggedIn(false);
+    localStorage.clear();
   }
 
   function handleLogin({ email, password }) {
     setIsLoading(true)
-    return auth.authorize(email, password)
+    auth.authorize(email, password)
       .then((data) => {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
@@ -44,7 +49,6 @@ export default function App() {
         }
       })
       .catch((err) => {
-        setIsSuccessInfoTooltip(false);
         setIsInfoTooltipPopupOpen(true);
         console.log(err)
       })
@@ -53,31 +57,32 @@ export default function App() {
 
   function handleRegister({ name, email, password }) {
     setIsLoading(true);
-    return auth.register(name, email, password)
+    auth.register(name, email, password)
       .then(() => {
         handleLogin({ email, password })
-        setIsSuccessInfoTooltip(true);
+      })
+      .then(() => {
+        setIsSuccess(true);
         setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
-        setIsSuccessInfoTooltip(false);
         setIsInfoTooltipPopupOpen(true);
         console.log(err)
       })
       .finally(() => setIsLoading(false));
   }
+
   function handleUpdateUser(data) {
     setIsLoading(true);
-    return mainApi.updateProfile(data)
+    mainApi.updateProfile(data)
       .then((res) => {
         setCurrentUser(res);
       })
       .then(() => {
-        setIsSuccessInfoTooltip(true);
+        setIsSuccess(true);
         setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
-        setIsSuccessInfoTooltip(false);
         setIsInfoTooltipPopupOpen(true);
         console.log(err)
       })
@@ -95,12 +100,11 @@ export default function App() {
 
   const handleSearchMovie = (searchText) => {
     setIsLoading(true);
-
     if (location.pathname === '/movies') {
       moviesApi.getMovies()
         .then((allMovies) => {
           const newMovies = setFilterMovies(allMovies, searchText)
-          return localStorage.setItem('movies', JSON.stringify({ movies: newMovies, searchText: searchText }));
+          return localStorage.setItem('movies', JSON.stringify({ movies: newMovies, searchText: searchText, checkedShorts: checkedShorts }));
         })
         .catch((err) => {
           console.log(err);
@@ -131,7 +135,6 @@ export default function App() {
     mainApi.addMovie(movieInfo)
       .then((savedMovie) => setSavedMovies([...savedMovies, savedMovie]))
       .catch((err) => {
-        setIsSuccessInfoTooltip(false);
         setIsInfoTooltipPopupOpen(true);
         console.log(err)
       });
@@ -139,39 +142,43 @@ export default function App() {
 
   const handleMovieDelete = (movieInfo) => {
     const movieId = movieInfo._id || (savedMovies.find((savedMovie) => savedMovie.movieId === movieInfo.id))._id;
+    const deleteFromList = (moviesArray) => {
+      return moviesArray.filter((oneMovie) => oneMovie._id !== movieId)
+    };
     mainApi.deleteMovie(movieId)
       .then(() => {
-        setSavedMovies((moviesArray) => moviesArray.filter((oneMovie) => oneMovie._id !== movieId));
+        setSavedMovies((moviesArray) => deleteFromList(moviesArray));
+        const newStorage = deleteFromList(JSON.parse(localStorage.getItem('saved-movies')));
+        localStorage.setItem('saved-movies', JSON.stringify(newStorage));
       })
       .catch((err) => {
-        setIsSuccessInfoTooltip(false);
         setIsInfoTooltipPopupOpen(true);
         console.log(err)
       });
   };
 
   useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      setIsLoading(true);
-      auth.checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            navigate(location.pathname);
-          }
-        })
-        .catch((err) => {
-          setIsSuccessInfoTooltip(false);
-          setIsInfoTooltipPopupOpen(true);
-          console.log(err)
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [])
+      const jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        setIsLoading(true);
+        auth.checkToken(jwt)
+          .then((res) => {
+            if (res) {
+              setLoggedIn(true);
+              navigate(location.pathname);
+            }
+          })
+          .catch((err) => {
+            setIsInfoTooltipPopupOpen(true);
+            console.log(err)
+          })
+          .finally(() => setIsLoading(false));
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (loggedIn) {
+    if (loggedIn === true) {
       setIsLoading(true);
       mainApi.getUserAndSavedMovies()
         .then(([user, movies]) => {
@@ -180,8 +187,6 @@ export default function App() {
           localStorage.setItem('saved-movies', JSON.stringify(movies));
         })
         .catch((err) => {
-          setIsSuccessInfoTooltip(false);
-          setIsInfoTooltipPopupOpen(true);
           console.log(err)
         })
         .finally(() => setIsLoading(false));
@@ -195,44 +200,45 @@ export default function App() {
         <Route path="/signup" element={<Register isLoading={isLoading} handleRegister={handleRegister} />} />
         <Route path="/movies" element={
           <ProtectedRoute
+            element={Movies}
             isLoading={isLoading}
             loggedIn={loggedIn}
-            element={Movies}
             savedMovies={savedMovies}
-            handleSearchMovie={handleSearchMovie}
+            onSearchMovie={handleSearchMovie}
             onCheckedShorts={setCheckedShorts}
             onMovieSave={handleMovieSave}
-            handleMovieDelete={handleMovieDelete}
+            onMovieDelete={handleMovieDelete}
           />
         }
         />
         <Route path="/saved-movies" element={
           <ProtectedRoute
+            element={SavedMovies}
             isLoading={isLoading}
             loggedIn={loggedIn}
-            element={SavedMovies}
             savedMovies={savedMovies}
-            onCheckedShorts={setCheckedShorts}
             onSearchMovie={handleSearchMovie}
-            handleMovieDelete={handleMovieDelete}
+            onMovieDelete={handleMovieDelete}
+            onCheckedShorts={setCheckedShorts}
           />
         }
         />
         <Route path="/profile" element={
           <ProtectedRoute
+            element={Profile}
             isLoading={isLoading}
             loggedIn={loggedIn}
-            element={Profile}
             onUpdateUser={handleUpdateUser}
+            signOut={signOut}
           />
         }
         />
-        <Route path='*' element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <InfoTooltip
         isOpen={isInfoTooltipPopupOpen}
         onClose={closeInfoTooltipPopup}
-        isSuccessInfoTooltip={isSuccessInfoTooltip}
+        isSuccess={isSuccess}
       />
     </CurrentUserContext.Provider>
   );

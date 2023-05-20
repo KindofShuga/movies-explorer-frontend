@@ -5,30 +5,31 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-export default function Movies({ isLoading, loggedIn, savedMovies, handleSearchMovie, onCheckedShorts, onMovieSave, handleMovieDelete }) {
+export default function Movies({
+    isLoading,
+    loggedIn,
+    savedMovies,
+    onSearchMovie,
+    onCheckedShorts,
+    onMovieSave,
+    onMovieDelete
+}) {
     return (
         <>
-            {isLoading ?
-                <Preloader />
-                :
-                <>
-                    <Header loggedIn={loggedIn} />
-                    <main>
-                        <SearchForm onSearchMovie={handleSearchMovie} onCheckedShorts={onCheckedShorts} />
-                        {isLoading ?
-                            <Preloader />
-                            :
-                            <MoviesCardList
-                                onSearchMovie={handleSearchMovie}
-                                savedMovies={savedMovies}
-                                onMovieSave={onMovieSave}
-                                handleMovieDelete={handleMovieDelete}
-                            />
-                        }
-                    </main>
-                    <Footer />
-                </>
-            }
+            <Header loggedIn={loggedIn} />
+            <main>
+                <SearchForm onSearchMovie={onSearchMovie} onCheckedShorts={onCheckedShorts} />
+                {isLoading ?
+                    <Preloader />
+                    :
+                    <MoviesCardList
+                        savedMovies={savedMovies}
+                        onMovieSave={onMovieSave}
+                        onMovieDelete={onMovieDelete}
+                    />
+                }
+            </main>
+            <Footer />
         </>
     );
 };

@@ -33,7 +33,9 @@ export default function Register({ isLoading, handleRegister }) {
                     name="name"
                     value={values.name || ""}
                 />
-                <span className="auth-form__input-err">{errors.name && "Поле может содержать только латиницу, кириллицу, пробел или дефис."}</span>
+                <span className="auth-form__input-err">
+                    {errors.name && "Поле может содержать только латиницу, кириллицу, пробел или дефис."}
+                </span>
             </label>
             <label className="auth-form__field">E-mail
                 <input

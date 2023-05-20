@@ -8,11 +8,11 @@ export default function InfoTooltip(props) {
             <div className="popup__container">
                 <button type="button" aria-label="Закрыть" className="popup__close-btn" onClick={props.onClose} />
                 <img
-                    src={props.isSuccessInfoTooltip ? successIcon : failIcon}
-                    alt={props.isSuccessInfoTooltip ? "Успешно" : "Ошибка"}
+                    src={props.isSuccess ? successIcon : failIcon}
+                    alt={props.isSuccess ? "Успешно" : "Ошибка"}
                 />
                 <h2 className="popup__heading">
-                    {props.isSuccessInfoTooltip
+                    {props.isSuccess
                         ? "Успешно!"
                         : "Что-то пошло не так! Попробуйте ещё раз."}
                 </h2>

@@ -2,8 +2,11 @@ export function filterMovies(movies, searchText, checkedShorts) {
     const searchedMovies = movies.filter((movie) => {
         const movieRu = movie.nameRU.toLowerCase();
         const movieEn = movie.nameEN.toLowerCase();
-
-        return movieRu.includes(searchText.toLowerCase()) || movieEn.includes(searchText.toLowerCase());
+        if(searchText) {
+            return movieRu.includes(searchText.toLowerCase()) || movieEn.includes(searchText.toLowerCase());
+        } else {
+            return movieRu || movieEn;
+        }
     });
     if (checkedShorts) {
         return searchedMovies.filter((movie) => {
