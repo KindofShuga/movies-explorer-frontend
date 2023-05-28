@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Preloader from '../Preloader/Preloader';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormWithValidation } from "../../utils/validation";
@@ -20,7 +20,7 @@ export default function Profile({ isLoading, loggedIn, onUpdateUser, signOut }) 
             setIsValid(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values]);
+    }, [values, useNavigate]);
 
     useEffect(() => {
         resetForm(currentUser);
@@ -39,7 +39,7 @@ export default function Profile({ isLoading, loggedIn, onUpdateUser, signOut }) 
                         <section className="profile">
                             <div className="profile__container">
                                 <h2 className="profile__title">Привет, {currentUser.name}!</h2>
-                                <form className="profile__form" onSubmit={handleSubmit}>
+                                <form className="profile__form" onSubmit={handleSubmit} noValidate>
                                     <label className="profile__field">Имя
                                         <input
                                             className={`profile__input ${errors.name ? "profile__input_err" : ""}`}
@@ -65,7 +65,7 @@ export default function Profile({ isLoading, loggedIn, onUpdateUser, signOut }) 
                                         />
                                         <span className="profile__input-err">{errors.email}</span>
                                     </label>
-                                    <button className={`profile__edit-btn ${!isValid ? "profile__edit-btn_inactive" : ""}`} type="submit">Редактировать</button>
+                                    <button className={`profile__edit-btn ${!isValid ? "profile__edit-btn_inactive" : ""}`} type="submit" disabled={!isValid}>Редактировать</button>
                                 </form>
                                 <Link className="profile__exit-btn" to="/" onClick={signOut}>Выйти из аккаунта</Link>
                             </div>

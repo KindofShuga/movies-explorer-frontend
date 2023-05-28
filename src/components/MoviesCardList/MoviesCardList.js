@@ -2,28 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { notFoundText } from '../../utils/textConstans';
+import {
+    NOT_FOUND,
+    TABLET_DISPLAY,
+    MOBILE_DISPLAY,
+    DISPLAYED_MOVIES_DESKTOP,
+    DISPLAYED_MOVIES_TABLET,
+    DISPLAYED_MOVIES_MOBILE,
+    SHOW_MORE_DESKTOP,
+    SHOW_MORE_TABLET_AND_MOBILE
+} from '../../utils/constans';
+import { filterMovies } from '../../utils/utils.js';
 
-export default function MoviesCardList({ savedMovies, onMovieSave, onMovieDelete }) {
+export default function MoviesCardList({ savedMovies, searchText, onMovieSave, onMovieDelete, checkedCheckbox }) {
     const location = useLocation();
     const [count, setCount] = useState(0);
     const [currentMovies, setCurrentMovies] = useState([]);
+    const windowDisplay = window.innerWidth;
 
     const changedWindow = () => {
-        if (window.innerWidth > 768) {
-            setCount(12)
-        } else if (window.innerWidth > 480) {
-            setCount(8)
+        if (windowDisplay > TABLET_DISPLAY) {
+            setCount(DISPLAYED_MOVIES_DESKTOP)
+        } else if (windowDisplay > MOBILE_DISPLAY) {
+            setCount(DISPLAYED_MOVIES_TABLET)
         } else {
-            setCount(5)
+            setCount(DISPLAYED_MOVIES_MOBILE)
         }
     };
 
     const addMore = () => {
-        if (window.innerWidth > 768) {
-            setCount(count + 3)
+        if (windowDisplay > 1280) {
+            setCount(count + SHOW_MORE_DESKTOP)
         } else {
-            setCount(count + 2)
+            setCount(count + SHOW_MORE_TABLET_AND_MOBILE)
         }
     };
 
@@ -37,22 +48,49 @@ export default function MoviesCardList({ savedMovies, onMovieSave, onMovieDelete
 
     useEffect(() => {
         changedWindow();
-    }, []);
-    useEffect(() => {
-        window.addEventListener('resize', changedWindow);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.innerWidth]);
+    }, [windowDisplay]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            window.addEventListener('resize', changedWindow);
+        }, 500);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+
     useEffect(() => {
         if (location.pathname === '/movies') {
             const moviesStorage = JSON.parse(localStorage.getItem('movies'));
             if (moviesStorage) {
-                setCurrentMovies(moviesStorage.movies);
+                if (moviesStorage.movies.length > 0) {
+                    if (checkedCheckbox === true) {
+                        setCurrentMovies(filterMovies(moviesStorage.movies, checkedCheckbox))
+                        localStorage.setItem('movies', JSON.stringify({ movies: moviesStorage.movies, searchText: moviesStorage.searchText, checkedShorts: true }));
+                    } else {
+                        const allMovies = JSON.parse(localStorage.getItem('all-movies'));
+                        const newMovies = filterMovies(allMovies, checkedCheckbox, moviesStorage.searchText);
+                        setCurrentMovies(newMovies);
+                        localStorage.setItem('movies', JSON.stringify({ movies: newMovies, searchText: moviesStorage.searchText, checkedShorts: false }));
+                    }
+                } else {
+                    setCurrentMovies(moviesStorage.movies);
+                }
+            } else {
+                setTimeout(() => {
+                    setCurrentMovies(JSON.parse(localStorage.getItem('all-movies')));
+                }, 500)
             }
         } else {
-            savedMovies.length > 0 ? setCurrentMovies(savedMovies) : setCurrentMovies([notFoundText]);
+            savedMovies.length > 0 ? setCurrentMovies(savedMovies) : setCurrentMovies([NOT_FOUND]);
+            if (checkedCheckbox === true) {
+                setCurrentMovies(filterMovies(savedMovies, checkedCheckbox))
+            } else {
+                const savedMoviesStorage = JSON.parse(localStorage.getItem('saved-movies'));
+                setCurrentMovies(filterMovies(savedMoviesStorage, checkedCheckbox, searchText))
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [localStorage, savedMovies, useNavigate]);
+    }, [searchText, savedMovies, useNavigate, checkedCheckbox]);
 
     return (
         <section className="movies">

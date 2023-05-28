@@ -142,6 +142,9 @@
 
 #check:checked~.header__fa-bars {
     background-image: url(/src/images/close-icon.svg);
+    position: fixed;
+    top: 20px;
+    right: 30px;
 }
 
 @media screen and (max-width: 900px) {
@@ -188,7 +191,7 @@
     }
 
     .header__account-container {
-        margin: 618px 0 0;
+        margin: 500px 0 0;
     }
     
 

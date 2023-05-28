@@ -4,11 +4,8 @@ import './SearchForm.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
 import { useFormWithValidation } from "../../utils/validation";
 
-export default function SearchForm({ onSearchMovie, onCheckedShorts }) {
+export default function SearchForm({ onSearchMovie, checkedCheckbox, onChangeShorts }) {
     const location = useLocation();
-    const checkboxFromStorage = localStorage.getItem('movies') ?
-        location.pathname === '/movies' && JSON.parse(localStorage.getItem('movies')).checkedShorts
-        : null;
     const { values, handleChange, errors, isValid, setIsValid } = useFormWithValidation();
 
     function handleSubmit(e) {
@@ -29,17 +26,20 @@ export default function SearchForm({ onSearchMovie, onCheckedShorts }) {
     }, [location]);
     return (
         <section className="search-form">
-            <form className="search-form__form" onSubmit={handleSubmit}>
+            <form className="search-form__form" onSubmit={handleSubmit} noValidate>
                 {location.pathname === '/movies' ?
-                    <input
-                        className={`search-form__input ${errors.title ? "search-form__input_err" : ""}`}
-                        type="text"
-                        onChange={handleChange}
-                        placeholder="Фильм"
-                        name="title"
-                        value={values.title || ""}
-                        required
-                    />
+                    <>
+                        <input
+                            className={`search-form__input ${errors.title ? "search-form__input_err" : ""}`}
+                            type="text"
+                            onChange={handleChange}
+                            placeholder="Фильм"
+                            name="title"
+                            value={values.title || ""}
+                            required
+                        />
+                        <span className="search-form__input-err">{errors.title && "Нужно ввести ключевое слово"}</span>
+                    </>
                     :
                     <input
                         className={`search-form__input ${errors.title ? "search-form__input_err" : ""}`}
@@ -50,10 +50,10 @@ export default function SearchForm({ onSearchMovie, onCheckedShorts }) {
                         value={values.title || ""}
                     />
                 }
-                <button className={`search-form__submit-btn ${!isValid ? "search-form__submit-btn_inactive" : ""}`} type="submit" aria-label="Найти" />
+                <button className={`search-form__submit-btn ${!isValid ? "search-form__submit-btn_inactive" : ""}`} type="submit" aria-label="Найти" disabled={!isValid} />
             </form>
             <div className="search-form__switch-container">
-                <FilterCheckbox onCheckedShorts={onCheckedShorts} checkboxFromStorage={checkboxFromStorage} />
+                <FilterCheckbox checkedCheckbox={checkedCheckbox} onChangeShorts={onChangeShorts} />
                 <p className="search-form__switch-text">Короткометражки</p>
             </div>
         </section>

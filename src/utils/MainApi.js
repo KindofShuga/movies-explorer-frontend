@@ -1,3 +1,5 @@
+import { BASE_URL } from './constans';
+
 class MainApi {
     constructor(baseUrl) {
         this._baseUrl = baseUrl;
@@ -78,5 +80,5 @@ class MainApi {
         return Promise.all(promises);
     }
 }
-const mainApi = new MainApi('https://api.movies-explorer.alina.nomoredomains.monster');
+const mainApi = new MainApi(BASE_URL);
 export default mainApi

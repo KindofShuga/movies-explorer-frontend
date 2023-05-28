@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -15,7 +15,7 @@ import mainApi from '../../utils/MainApi';
 import * as auth from '../../utils/auth'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { filterMovies } from '../../utils/utils.js';
-import { serverErrorText, notFoundText } from '../../utils/textConstans';
+import { SERVER_ERROR } from '../../utils/constans';
 
 export default function App() {
   const navigate = useNavigate();
@@ -24,13 +24,20 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [savedMovies, setSavedMovies] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [checkedShorts, setCheckedShorts] = useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  function getAllMovies() {
+    moviesApi.getMovies()
+      .then((allMovies) => localStorage.setItem('all-movies', JSON.stringify(allMovies)))
+      .catch((err) => console.log(err));
+  }
+
   function closeInfoTooltipPopup() {
     setIsInfoTooltipPopupOpen(false);
-    setIsSuccess(false);
+    setTimeout(() => setIsSuccess(false), 2000);
   }
 
   function signOut() {
@@ -45,7 +52,8 @@ export default function App() {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           setLoggedIn(true);
-          navigate("/movies");
+          getAllMovies();
+          navigate("/movies")
         }
       })
       .catch((err) => {
@@ -89,41 +97,33 @@ export default function App() {
       .finally(() => setIsLoading(false));
   }
 
-  const setFilterMovies = (allMovies, searchText) => {
-    const filteredMovies = filterMovies(allMovies, searchText, checkedShorts);
-    if (filteredMovies.length === 0) {
-      return [notFoundText];
-    } else {
-      return filteredMovies;
-    }
-  };
-
   const handleSearchMovie = (searchText) => {
+    setSearchText(searchText)
     setIsLoading(true);
     if (location.pathname === '/movies') {
-      moviesApi.getMovies()
-        .then((allMovies) => {
-          const newMovies = setFilterMovies(allMovies, searchText)
-          return localStorage.setItem('movies', JSON.stringify({ movies: newMovies, searchText: searchText, checkedShorts: checkedShorts }));
-        })
-        .catch((err) => {
-          console.log(err);
-          return localStorage.setItem('movies', JSON.stringify({
-            movies: [serverErrorText],
-            searchText: searchText
-          }));
-        })
-        .finally(() => {
-          setIsLoading(false)
-        });
+      try {
+        const allMovies = JSON.parse(localStorage.getItem('all-movies'))
+        const newMovies = filterMovies(allMovies, checkedShorts, searchText)
+        localStorage.setItem('movies', JSON.stringify({ movies: newMovies, searchText: searchText, checkedShorts: checkedShorts }));
+      }
+      catch (err) {
+        console.log(err);
+        return localStorage.setItem('movies', JSON.stringify({
+          movies: [SERVER_ERROR],
+          searchText: searchText
+        }));
+      }
+      finally {
+        setIsLoading(false)
+      }
     } else {
       try {
-        const newMovies = setFilterMovies(JSON.parse(localStorage.getItem('saved-movies')), searchText);
+        const newMovies = filterMovies(JSON.parse(localStorage.getItem('saved-movies')), checkedShorts, searchText);
         setSavedMovies(newMovies);
       }
       catch (err) {
         console.log(err);
-        setSavedMovies([serverErrorText]);
+        setSavedMovies([SERVER_ERROR]);
       }
       finally {
         setIsLoading(false)
@@ -158,22 +158,22 @@ export default function App() {
   };
 
   useEffect(() => {
-      const jwt = localStorage.getItem('jwt');
-      if (jwt) {
-        setIsLoading(true);
-        auth.checkToken(jwt)
-          .then((res) => {
-            if (res) {
-              setLoggedIn(true);
-              navigate(location.pathname);
-            }
-          })
-          .catch((err) => {
-            setIsInfoTooltipPopupOpen(true);
-            console.log(err)
-          })
-          .finally(() => setIsLoading(false));
-      }
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      setIsLoading(true);
+      auth.checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate(location.pathname);
+          }
+        })
+        .catch((err) => {
+          setIsInfoTooltipPopupOpen(true);
+          console.log(err)
+        })
+        .finally(() => setIsLoading(false));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -191,21 +191,32 @@ export default function App() {
         })
         .finally(() => setIsLoading(false));
     }
-  }, [loggedIn, navigate])
+  }, [loggedIn, navigate]);
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route path="/" element={<Main loggedIn={loggedIn} />} />
-        <Route path="/signin" element={<Login isLoading={isLoading} handleLogin={handleLogin} />} />
-        <Route path="/signup" element={<Register isLoading={isLoading} handleRegister={handleRegister} />} />
+
+        <Route path="/signin" element={
+          !loggedIn ?
+            (<Login isLoading={isLoading} handleLogin={handleLogin} />) :
+            (<Navigate to="/" />)
+        } />
+        <Route path="/signup" element={
+          !loggedIn ?
+            (<Register isLoading={isLoading} handleRegister={handleRegister} />) :
+            (<Navigate to="/" />)
+        } />
+
         <Route path="/movies" element={
           <ProtectedRoute
             element={Movies}
             isLoading={isLoading}
             loggedIn={loggedIn}
+            searchText={searchText}
             savedMovies={savedMovies}
             onSearchMovie={handleSearchMovie}
-            onCheckedShorts={setCheckedShorts}
+            checkedShorts={setCheckedShorts}
             onMovieSave={handleMovieSave}
             onMovieDelete={handleMovieDelete}
           />
@@ -217,9 +228,10 @@ export default function App() {
             isLoading={isLoading}
             loggedIn={loggedIn}
             savedMovies={savedMovies}
+            searchText={searchText}
             onSearchMovie={handleSearchMovie}
             onMovieDelete={handleMovieDelete}
-            onCheckedShorts={setCheckedShorts}
+            checkedShorts={setCheckedShorts}
           />
         }
         />

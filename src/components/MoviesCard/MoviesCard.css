@@ -48,6 +48,7 @@
 
 .movie__delete-btn {
     opacity: 0;
+    padding: 0;
     position: absolute;
     width: 21px;
     height: 21px;
@@ -104,6 +105,7 @@
 }
 
 .movie__input:checked+.movie__save-btn {
+    opacity: 1;
     background-image: url(/src/images/check-mark.svg);
     background-size: 9px 7px;
     background-color: #EE3465;
@@ -128,6 +130,11 @@
     .movie__duration {
         font-size: 11px;
         line-height: 10px;
+    }
+
+    .movie__save-btn,
+    .movie__delete-btn {
+        opacity: 1;
     }
 }
 

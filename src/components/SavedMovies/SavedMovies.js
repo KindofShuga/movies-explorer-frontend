@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Preloader from '../Preloader/Preloader';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -9,19 +9,26 @@ export default function SavedMovies({
     isLoading,
     loggedIn,
     savedMovies,
+    searchText,
     onMovieDelete,
     onSearchMovie,
-    onCheckedShorts
+    checkedShorts
 }) {
+    const [ checkedCheckbox, setCheckedCheckbox ] = useState(false);
+
+    function handleChangeShorts() {
+        setCheckedCheckbox(!checkedCheckbox);
+        checkedShorts(!checkedCheckbox);
+    }
     return (
         <>
             <Header loggedIn={loggedIn} />
             <main>
-                <SearchForm onSearchMovie={onSearchMovie} onCheckedShorts={onCheckedShorts} />
+                <SearchForm onSearchMovie={onSearchMovie} checkedCheckbox={checkedCheckbox} onChangeShorts={handleChangeShorts} />
                 {isLoading ?
                     <Preloader />
                     :
-                    <MoviesCardList savedMovies={savedMovies} onMovieDelete={onMovieDelete} />
+                    <MoviesCardList savedMovies={savedMovies} searchText={searchText} onMovieDelete={onMovieDelete} checkedCheckbox={checkedCheckbox} />
                 }
             </main>
             <Footer />

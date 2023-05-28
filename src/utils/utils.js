@@ -1,19 +1,32 @@
-export function filterMovies(movies, searchText, checkedShorts) {
+import { NOT_FOUND, SHORT_DURATION } from './constans';
+
+export function filterMovies(movies, checkedShorts, searchText) {
     const searchedMovies = movies.filter((movie) => {
-        const movieRu = movie.nameRU.toLowerCase();
-        const movieEn = movie.nameEN.toLowerCase();
-        if(searchText) {
-            return movieRu.includes(searchText.toLowerCase()) || movieEn.includes(searchText.toLowerCase());
+        if (typeof movie === "string") {
+            return []
         } else {
-            return movieRu || movieEn;
+            const movieRu = movie.nameRU.toLowerCase();
+            const movieEn = movie.nameEN.toLowerCase();
+            if (searchText) {
+                return movieRu.includes(searchText.toLowerCase()) || movieEn.includes(searchText.toLowerCase());
+            } else {
+                return movieRu || movieEn;
+            }
         }
     });
-    if (checkedShorts) {
-        return searchedMovies.filter((movie) => {
-            return movie.duration <= 40;
+    if (checkedShorts && typeof searchedMovies[0] !== "string" && searchedMovies.length > 0) {
+        const shortMovies = searchedMovies.filter((movie) => {
+            return movie.duration <= SHORT_DURATION;
         });
-    } else {
+        if (shortMovies.length > 0) {
+            return shortMovies;
+        } else {
+            return [NOT_FOUND];
+        }
+    } else if (typeof searchedMovies[0] !== "string" && searchedMovies.length > 0) {
         return searchedMovies;
+    } else {
+        return [NOT_FOUND];
     }
 }
 

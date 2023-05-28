@@ -16,11 +16,13 @@ export default function AuthWithForm(props) {
                             <img className="auth-form__logo" src={logoImage} alt="Логотип" />
                         </Link>
                         <h2 className="auth-form__title">{props.title}</h2>
-                        <form className="auth-form__form" onSubmit={props.onSubmit}>
+                        <form className="auth-form__form" onSubmit={props.onSubmit} noValidate>
                             {props.children}
                             <button
                                 className={`auth-form__submit-btn ${!props.isValid ? "auth-form__submit-btn_inactive" : ""}`}
-                                type="submit">{props.buttonTitle}
+                                type="submit"
+                                disabled={!props.isValid}
+                                >{props.buttonTitle}
                             </button>
                             <p className="auth-form__text">{props.textQuestion}
                                 <Link className="auth-form__link" to={props.link}>{props.linkTitle}</Link>

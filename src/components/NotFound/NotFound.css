@@ -21,6 +21,10 @@
 }
 
 .not-found__link {
+    padding: 0;
+    border: none;
+    background-color: unset;
+    cursor: pointer;
     font-size: 14px;
     line-height: 17px;
     color: #3456F3;

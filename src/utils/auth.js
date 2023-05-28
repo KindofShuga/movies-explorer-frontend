@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.movies-explorer.alina.nomoredomains.monster';
+import { BASE_URL } from './constans';
 
 const getResponse = (res) => {
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
