@@ -75,10 +75,6 @@ export default function MoviesCardList({ savedMovies, searchText, onMovieSave, o
                 } else {
                     setCurrentMovies(moviesStorage.movies);
                 }
-            } else {
-                setTimeout(() => {
-                    setCurrentMovies(JSON.parse(localStorage.getItem('all-movies')));
-                }, 500)
             }
         } else {
             savedMovies.length > 0 ? setCurrentMovies(savedMovies) : setCurrentMovies([NOT_FOUND]);
