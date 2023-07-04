@@ -1,12 +1,12 @@
 .movie {
     list-style-type: none;
     position: relative;
-    cursor: pointer;
 }
 
 
 .movie__image {
     width: 100%;
+    aspect-ratio: 16/9;
     margin-bottom: 11px;
     object-fit: cover;
     border-radius: 6px;
@@ -41,13 +41,14 @@
     background-position: center;
     width: 72px;
     background-color: #F4F4F4;
-    transition: opacity .3s ease-out,
+    transition: opacity .4s ease-out,
                 width .5s,
                 background-color 1s;
 }
 
 .movie__delete-btn {
     opacity: 0;
+    padding: 0;
     position: absolute;
     width: 21px;
     height: 21px;
@@ -74,6 +75,7 @@
 
 .movie__title {
     margin: 0;
+    max-width: 275px;
     font-weight: 500;
     font-size: 13px;
     line-height: 16px;
@@ -103,6 +105,7 @@
 }
 
 .movie__input:checked+.movie__save-btn {
+    opacity: 1;
     background-image: url(/src/images/check-mark.svg);
     background-size: 9px 7px;
     background-color: #EE3465;
@@ -127,6 +130,11 @@
     .movie__duration {
         font-size: 11px;
         line-height: 10px;
+    }
+
+    .movie__save-btn,
+    .movie__delete-btn {
+        opacity: 1;
     }
 }
 

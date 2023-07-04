@@ -19,7 +19,7 @@
     transition: .4s;
 }
 
-.movies__text {
+.movies__btn-text {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -34,11 +34,19 @@
     cursor: pointer;
 }
 
+.movies__result-text {
+    margin: 0;
+    text-align: center;
+    color: #a0a0a0;
+    font-size: 14px;
+    line-height: 17px;
+}
+
 .movies__more:hover {
     opacity: .6;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 907px) {
     .movies {
         padding: 69px 30px 80px;
     }

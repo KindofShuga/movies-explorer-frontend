@@ -1,27 +1,45 @@
 import React from 'react';
 import { useLocation } from "react-router-dom";
 import './MoviesCard.css'
-import moviePic from '../../images/movie.png';
+import { getTimeFromMins } from '../../utils/utils';
 
-export default function MoviesCard() {
+export default function MoviesCard({ movieInfo, onMovieSave, onMovieDelete, onCheckboxChecked }) {
     const location = useLocation();
+    const moviesLocation = location.pathname === "/movies";
+
+    const handleChange = (event) => {
+        if (event.target.checked === true) {
+            onMovieSave(movieInfo);
+        } else {
+            onMovieDelete(movieInfo);
+        }
+    }
+    const handleDeleteSavedMovie = () => {
+        onMovieDelete(movieInfo);
+    }
 
     return (
         <li className="movie">
-            {location.pathname === "/movies" ? (
-                <label className="movie__checkbox">
-                    <input className="movie__input" type="checkbox" />
-                    <span className="movie__save-btn"></span>
-                </label>
-            ) : (
-                <button className="movie__delete-btn" type="button" />
-            )
+            {moviesLocation ?
+                (
+                    <label className="movie__checkbox">
+                        <input className="movie__input" type="checkbox" onChange={handleChange} checked={onCheckboxChecked} />
+                        <span className="movie__save-btn"></span>
+                    </label>
+                ) : (
+                    <button className="movie__delete-btn" type="button" onClick={handleDeleteSavedMovie} />
+                )
             }
-            <img className="movie__image" src={moviePic} alt="Изображение фильма" />
+            <a href={movieInfo.trailerLink} target="_blank" rel="noreferrer">
+                <img
+                    className="movie__image"
+                    src={moviesLocation ? `https://api.nomoreparties.co/${movieInfo.image.url}` : movieInfo.image}
+                    alt={movieInfo.nameRU} />
+            </a>
             <div className="movie__description">
-                <h3 className="movie__title">33 слова о дизайне</h3>
+                <h3 className="movie__title">{movieInfo.nameRU}</h3>
                 <div>
-                    <p className="movie__duration">1ч 17м</p>
+                    <p className="movie__duration">{getTimeFromMins(movieInfo.duration)}</p>
                 </div>
             </div>
         </li>

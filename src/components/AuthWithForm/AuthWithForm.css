@@ -25,14 +25,13 @@
 }
 
 .auth-form__form {
-    min-height: 335px;
+    min-height: 412px;
     display: flex;
     flex-direction: column;
 }
 
 .auth-form__field {
     margin: 0 0 6px;
-    min-height: 63px;
     display: flex;
     flex-direction: column;
     font-size: 10px;
@@ -52,12 +51,8 @@
     transition: border-bottom .4s;
 }
 
-.auth-form__input_err {
-    font-weight: 400;
-    color: #EE3465;
-}
-
 .auth-form__input-err {
+    min-height: 12px;
     margin-top: 6px;
     font-size: 10px;
     line-height: 12px;
@@ -65,7 +60,7 @@
 }
 
 .auth-form__submit-btn {
-    margin: 0;
+    margin: auto 0 0;
     padding: 0;
     min-height: 45px;
     font-weight: 500;
@@ -81,6 +76,7 @@
 
 .auth-form__text {
     margin: 16px auto 0;
+    justify-self: flex-end;
     font-size: 14px;
     line-height: 17px;
     color: #A0A0A0;
@@ -92,10 +88,28 @@
     text-decoration: none;
     transition: opacity .2s ease-in;
 }
+
+.auth-form__input_err {
+    font-weight: 400;
+    color: #EE3465;
+}
+
+.auth-form__submit-btn_inactive {
+    font-weight: 400;
+    cursor: default;
+    box-sizing: border-box;
+    color: #a7a7a7;
+    border: 1px solid #a7a7a7;
+    background-color: white;
+}
+
 .auth-form__logo:hover,
 .auth-form__submit-btn:hover,
 .auth-form__link:hover {
     opacity: .6;
+}
+.auth-form__submit-btn_inactive:hover {
+    opacity: 1;
 }
 
 .auth-form__field:last-of-type {
@@ -144,10 +158,14 @@
     }
 
     .auth-form__form {
-        min-height: 423px;
+        min-height: 498px;
     }
 
-    .auth-form__submit-btn,
+    .auth-form__submit-btn {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
     .auth-form__text {
         font-size: 12px;
         line-height: 15px;

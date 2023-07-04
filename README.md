@@ -1,5 +1,7 @@
 # Проект Movies-explorer фронтенд  
-###### Репозиторий фронтенд-части приложения `Movies-explorer`
+###### Репозиторий фронтенд-части приложения `Movies-explorer`  
+## **[Сайт](https://movies-explorer.alinat.nomoredomains.monster/)**  
+## **[Пул реквест](https://github.com/KindofShuga/movies-explorer-frontend/pull/2)**  
 
 ___
 
