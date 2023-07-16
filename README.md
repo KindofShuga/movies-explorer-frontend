@@ -3,7 +3,7 @@
 
 ### :clipboard: __Описание:__
 
-`«Movies-explorer»` — завершающий дипломный проект ***[на платформе Яндекс.Практикум](https://practicum.yandex.ru/)***. Проект представляет собой сервис поиска и сохранения фимльмов по ключевым словам.
+`«Movies-explorer»` — завершающий дипломный проект ***[на платформе Яндекс.Практикум](https://practicum.yandex.ru/)***. Проект представляет собой сервис поиска и сохранения фильмов по ключевым словам.
 
 ### **[Сайт](https://movies-explorer.alinat.nomoredomains.monster/)**
 ### **[Репозиторий с бекендом](https://github.com/KindofShuga/movies-explorer-api)**
