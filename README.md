@@ -5,7 +5,7 @@
 
 `«Movies-explorer»` — завершающий дипломный проект ***[на платформе Яндекс.Практикум](https://practicum.yandex.ru/)***. Проект представляет собой сервис поиска и сохранения фильмов по ключевым словам.
 
-### **[Сайт](https://movies-explorer.alinat.nomoredomains.monster/)**
+`Сайт приостановлен`
 ### **[Репозиторий с бекендом](https://github.com/KindofShuga/movies-explorer-api)**
 
 ___
